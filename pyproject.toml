@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "pyhotels"
+version = "0.1.0"
+description = ""
+authors = ["justyfay"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.108.0"
+uvicorn = "^0.25.0"
+setuptools = "^69.0.3"
+sqlalchemy = "^2.0.25"
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
+pydantic = {extras = ["email"], version = "^2.5.3"}
+pydantic-settings = "^2.1.0"
+greenlet = "^3.0.3"
+passlib = "^1.7.4"
+python-jose = "^3.3.0"
+loguru = "^0.7.2"
+bcrypt = "^4.1.2"
+anytree = "^2.12.1"
+python-dateutil = "^2.8.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
