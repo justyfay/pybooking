@@ -1,11 +1,11 @@
-from typing import Type, Optional, Sequence, Tuple, Any
+from typing import Any, Optional, Sequence, Tuple, Type
 
 from loguru import logger
-from sqlalchemy import select, insert, RowMapping, Select, Result
+from sqlalchemy import Result, RowMapping, Select, insert, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.sql.dml import ReturningInsert
 
-from src.database import async_session_maker, Base
+from src.database import Base, async_session_maker, query_compile
 
 
 class BaseDb:
@@ -14,26 +14,46 @@ class BaseDb:
     @classmethod
     async def find_one_or_none(cls, **filter_by) -> Optional[RowMapping]:
         async with async_session_maker() as session:
-            query: Select[Tuple | Any] = select(cls.model.__table__.columns).filter_by(**filter_by)
-            result: Result[Tuple | Any] = await session.execute(query)
-            return result.mappings().one_or_none()
+            query: Select[Tuple | Any] = select(cls.model.__table__.columns).filter_by(
+                **filter_by
+            )
+            logger.debug(f"SQL Query: '{query_compile(query)}'")
+            query_execute: Result[Tuple | Any] = await session.execute(query)
+            result: Optional[RowMapping] = query_execute.mappings().one_or_none()
+            logger.info(f"Result: '{result}'")
+            return result
 
     @classmethod
-    async def find_all(cls, limit: int = 10, page: int = 1, **filter_by) -> Sequence[RowMapping]:
+    async def find_all(
+        cls, limit: int = 10, page: int = 1, **filter_by
+    ) -> Sequence[RowMapping]:
         async with async_session_maker() as session:
-            query: Select[Tuple | Any] = select(
-                cls.model.__table__.columns).filter_by(**filter_by).limit(limit).offset(page)
-            result: Result[Tuple | Any] = await session.execute(query)
-            return result.mappings().all()
+            query: Select[Tuple | Any] = (
+                select(cls.model.__table__.columns)
+                .filter_by(**filter_by)
+                .limit(limit)
+                .offset(page)
+            )
+            logger.debug(f"SQL Query: '{query_compile(query)}'")
+            query_execute: Result[Tuple | Any] = await session.execute(query)
+            result: Sequence[RowMapping] = query_execute.mappings().all()
+            logger.info(f"Result: '{result}'")
+            return result
 
     @classmethod
-    async def add(cls, **data) -> None:
+    async def add(cls, **data) -> Optional[RowMapping] | None:
+        msg: str = ""
         try:
-            query: ReturningInsert[Tuple | Any] = insert(cls.model).values(**data).returning(cls.model.id)
+            query: ReturningInsert[Tuple | Any] = (
+                insert(cls.model).values(**data).returning(cls.model.id)
+            )
+            logger.debug(f"SQL Query: '{query_compile(query)}'")
             async with async_session_maker() as session:
-                result: Result[Tuple | Any] = await session.execute(query)
+                query_execute: Result[Tuple | Any] = await session.execute(query)
+                result: Optional[RowMapping] = query_execute.mappings().first()
+                logger.info(f"Result: '{result}'")
                 await session.commit()
-                return result.mappings().first()
+                return result
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
                 msg: str = "Database Exc: Cannot insert data into table"

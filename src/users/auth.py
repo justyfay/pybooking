@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, UTC, date
+from datetime import UTC, date, datetime, timedelta
 from typing import Optional
 
 from jose import jwt
@@ -6,8 +6,8 @@ from passlib.context import CryptContext
 from pydantic import EmailStr
 from sqlalchemy import RowMapping
 
-from src.users.db import UsersDb
 from config import settings
+from src.users.db import UsersDb
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -24,9 +24,7 @@ def create_access_token(data: dict) -> str:
     to_encode: dict = data.copy()
     expire: date = datetime.now(UTC).replace(tzinfo=None) + timedelta(minutes=30)
     to_encode.update({"exp": expire})
-    encoded_jwt: str = jwt.encode(
-        to_encode, settings.secret_key, settings.algorithm
-    )
+    encoded_jwt: str = jwt.encode(to_encode, settings.secret_key, settings.algorithm)
     return encoded_jwt
 
 

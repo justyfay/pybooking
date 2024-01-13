@@ -2,11 +2,12 @@ from datetime import date
 from typing import List
 
 from dateutil.relativedelta import relativedelta
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, RootModel
 
 
 class BookingSchema(BaseModel):
-    """Схема для получения информации по бронированиям."""
+    """Схема для получения информации по бронированию."""
+
     id: int
     room_id: int
     user_id: int
@@ -24,8 +25,15 @@ class BookingSchema(BaseModel):
         from_attributes = True
 
 
+class ListBookingsSchema(RootModel):
+    """Схема для получения списка бронирований."""
+
+    root: List[BookingSchema]
+
+
 class NewBookingSchema(BaseModel):
     """Схема для добавления новых бронирований."""
+
     room_id: int
     user_id: int
     date_from: date
@@ -37,6 +45,7 @@ class NewBookingSchema(BaseModel):
 
 class BookingResponseSchema(BaseModel):
     """Схема ответа на добавление нового бронирования."""
+
     id: int
     user_id: int
     room_id: int

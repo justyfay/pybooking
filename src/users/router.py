@@ -5,10 +5,10 @@ from sqlalchemy import RowMapping
 from starlette import status
 
 from src.exceptions import UserAlreadyExistsException
-from src.schemas import SuccessResponse, ConflictUsersResponse
-from src.users.auth import get_password_hash, authenticate_user, create_access_token
-from src.users.schemas import UserAuthSchema, UserLoginSchema
+from src.schemas import ConflictUsersResponse, SuccessResponse
+from src.users.auth import authenticate_user, create_access_token, get_password_hash
 from src.users.db import UsersDb
+from src.users.schemas import UserAuthSchema, UserLoginSchema
 
 router = APIRouter(
     prefix="/auth",
@@ -31,10 +31,12 @@ router = APIRouter(
             "model": ConflictUsersResponse,
             "description": "Ответ на запрос при попытке зарегистрировать существующего пользователя.",
         },
-    }
+    },
 )
-async def user_register(user_data: UserAuthSchema):
-    user_exist: Optional[RowMapping] = await UsersDb.find_one_or_none(email=user_data.email)
+async def user_register(user_data: UserAuthSchema) -> None:
+    user_exist: Optional[RowMapping] = await UsersDb.find_one_or_none(
+        email=user_data.email
+    )
     if user_exist:
         raise UserAlreadyExistsException
     hashed_password: str = get_password_hash(user_data.password)
@@ -52,10 +54,12 @@ async def user_register(user_data: UserAuthSchema):
             "model": UserLoginSchema,
             "description": "Ответ на успешный запрос авторизации пользователя.",
         }
-    }
+    },
 )
 async def user_login(response: Response, user_data: UserAuthSchema) -> UserLoginSchema:
-    user: Optional[RowMapping] = await authenticate_user(user_data.email, user_data.password)
+    user: Optional[RowMapping] = await authenticate_user(
+        user_data.email, user_data.password
+    )
     access_token: str = create_access_token({"sub": str(user.id)})
     response.set_cookie("access_token", access_token, httponly=True, expires=3600)
     return UserLoginSchema.model_construct(access_token=access_token)
@@ -72,7 +76,7 @@ async def user_login(response: Response, user_data: UserAuthSchema) -> UserLogin
             "model": SuccessResponse,
             "description": "Ответ на успешный запрос выхода пользователя.",
         }
-    }
+    },
 )
 async def user_logout(response: Response) -> None:
     response.delete_cookie("access_token")

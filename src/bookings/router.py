@@ -1,12 +1,13 @@
-from typing import List, Sequence
-
-from fastapi import APIRouter, Depends, Query, Path
-from sqlalchemy import RowMapping
+from fastapi import APIRouter, Depends, Path, Query
 from starlette import status
 
 from src.bookings.db import BookingDb
-from src.bookings.schemas import BookingSchema, NewBookingSchema, BookingResponseSchema
-from src.schemas import UnauthorizedResponse, ConflictBookingResponse
+from src.bookings.schemas import (
+    BookingResponseSchema,
+    ListBookingsSchema,
+    NewBookingSchema,
+)
+from src.schemas import ConflictBookingResponse, UnauthorizedResponse
 from src.users.dependencies import get_current_user
 from src.users.models import Users
 
@@ -18,29 +19,31 @@ router = APIRouter(
             "model": UnauthorizedResponse,
             "description": "Ответ на запрос от неавторизованного пользователя.",
         },
-    }
+    },
 )
 
 
 @router.get(
     path="",
-    response_model=List[BookingSchema],
+    response_model=ListBookingsSchema,
     status_code=status.HTTP_200_OK,
     summary="Список бронирований",
     description="Получение списка бронирований авторизованного пользователя.",
     responses={
         status.HTTP_200_OK: {
-            "model": List[BookingSchema],
+            "model": ListBookingsSchema,
             "description": "Ответ на успешный запрос получения списка бронирований.",
         },
-    }
+    },
 )
 async def get_bookings(
-        user: Users = Depends(get_current_user),
-        limit: int = Query(10, description="Количество бронирований на одной странице"),
-        page: int = Query(1, description="Пагинация"),
-) -> Sequence[RowMapping]:
-    return await BookingDb.find_bookings_with_room_info(user_id=user.id, limit=limit, page=page)
+    user: Users = Depends(get_current_user),
+    limit: int = Query(10, description="Количество бронирований на одной странице"),
+    page: int = Query(1, description="Пагинация"),
+) -> ListBookingsSchema:
+    return await BookingDb.find_bookings_with_room_info(
+        user_id=user.id, limit=limit, page=page
+    )
 
 
 @router.post(
@@ -58,17 +61,17 @@ async def get_bookings(
             "model": ConflictBookingResponse,
             "description": "Ответ на запрос при попытке забронировать занятый номер.",
         },
-    }
+    },
 )
 async def add_booking(
-        booking_data: NewBookingSchema,
-        user: Users = Depends(get_current_user),
-) -> RowMapping:
+    booking_data: NewBookingSchema,
+    user: Users = Depends(get_current_user),
+) -> BookingResponseSchema:
     return await BookingDb.add(
         room_id=booking_data.room_id,
         user_id=user.id,
         date_from=booking_data.date_from,
-        date_to=booking_data.date_to
+        date_to=booking_data.date_to,
     )
 
 
@@ -79,6 +82,6 @@ async def add_booking(
     description="Отмена существующего бронирования.",
 )
 async def delete_booking(
-        booking_id: int = Path(..., description="ID бронирования для удаления."),
-):
+    booking_id: int = Path(..., description="ID бронирования для удаления."),
+) -> None:
     return await BookingDb.delete(booking_id)
