@@ -1,5 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from src import routers
 
@@ -12,7 +14,23 @@ app = FastAPI(
 
 
 app.include_router(routers.api_router)
+app.mount("/static", StaticFiles(directory="static/"), "static")
 
+origins = ["http://localhost:8000", "http://localhost:3000"]
+
+app.add_middleware(
+    middleware_class=CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
+    allow_headers=[
+        "Content-Type",
+        "Set-Cookie",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
+        "Authorization",
+    ],
+)
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app", reload=True)

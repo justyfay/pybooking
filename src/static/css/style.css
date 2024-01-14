@@ -1,0 +1,61 @@
+* {
+    box-sizing: border-box;
+}
+
+.header_image{
+	border-radius: 8px;
+}
+
+.search_container {
+    display: flex;
+    width: 100%;
+    gap: 0 10px;
+    justify-content: space-between;
+    text-align: left;
+
+}
+.search_panel{
+    font-size: 20px;
+	line-height: 150%;
+    width: 80%;
+}
+.search_panel:first-child{
+    font-size: 20px;
+	line-height: 150%;
+    width: 200%;
+}
+
+.search_panel .search_button {
+    height: 44px;
+	margin-top: 30px;
+	margin-left: auto;
+    width: 100%;
+	border-radius: 6px;
+	font-size: 20px;
+	border: solid #cececf 1px;
+}
+
+.country_cards {
+	border-radius: 8px;
+    width: 100%;
+    gap: 0 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+    justify-content: space-between;
+}
+
+.card_container {
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+
+h5 {
+    position: absolute;
+    background-size: 200px 100px;
+    top: 253px;
+    width: 100%;
+    color: white;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+}

@@ -22,6 +22,8 @@ loguru = "^0.7.2"
 bcrypt = "^4.1.2"
 anytree = "^2.12.1"
 python-dateutil = "^2.8.2"
+fastui = "^0.4.0"
+arel = "^0.3.0"
 
 [build-system]
 requires = ["poetry-core"]
