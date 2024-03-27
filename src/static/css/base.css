@@ -1,0 +1,9 @@
+.btn.btn-primary:active,
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+  background-color: #0051e7 !important;
+}
+
+.rating-color{
+    color:#fbc634 !important;
+}

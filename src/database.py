@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, Mapped
 from sqlalchemy.sql.compiler import SQLCompiler
 from sqlalchemy.sql.dml import ReturningInsert
 
@@ -23,6 +23,7 @@ class Base(DeclarativeBase):
     """Класс аккумуляции данных всех таблиц для работы с миграциями."""
 
     id: Optional[int] = None
+    name: Optional[Mapped[str]] = None
     pass
 
 

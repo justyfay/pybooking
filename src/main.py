@@ -12,9 +12,8 @@ app = FastAPI(
     version="0.1.0",
 )
 
-
 app.include_router(routers.api_router)
-app.mount("/static", StaticFiles(directory="static/"), "static")
+app.mount("/src/static", StaticFiles(directory="src/static"), "static")
 
 origins = ["http://localhost:8000", "http://localhost:3000"]
 
