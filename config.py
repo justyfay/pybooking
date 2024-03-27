@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     db_pass: str
     secret_key: str
     algorithm: str
+    base_url: str
 
     @property
     def database_url(self) -> str:

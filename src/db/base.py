@@ -41,6 +41,18 @@ class BaseDb:
             return result
 
     @classmethod
+    async def find_like(cls, value: str):
+        async with async_session_maker() as session:
+            query: Select[Tuple[Any]] = select(cls.model.__table__.columns).where(
+                cls.model.name.like(f"%{value}%")
+            )
+            logger.debug(f"SQL Query: '{query_compile(query)}'")
+            query_execute: Result[Tuple | Any] = await session.execute(query)
+            result: Sequence[RowMapping] = query_execute.mappings().all()
+            logger.info(f"Result: '{result}'")
+            return result
+
+    @classmethod
     async def add(cls, **data) -> Optional[RowMapping] | None:
         msg: str = ""
         try:

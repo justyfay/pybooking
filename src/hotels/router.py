@@ -17,70 +17,10 @@ router = APIRouter(
 
 
 @router.get(
-    path="/city/results",
+    path="/results",
     status_code=status.HTTP_200_OK,
     response_model=ListHotelsWithRoomsSchema,
-    summary="Поиск отелей по городу",
-    description="Поиск отелей доступен для неавторизованных пользователей. Возвращает список отелей по городу, "
-    "где есть хотя бы один свободный для бронирования номер.",
-    responses={
-        status.HTTP_200_OK: {
-            "model": ListHotelsWithRoomsSchema,
-            "description": "Ответ на успешный запрос получения списка отелей по городу.",
-        }
-    },
-)
-async def get_hotels_by_city(
-    city_name: str = Query(
-        default="Сыктывкар", description="Название города. Не чувствителен к регистру."
-    ),
-    arrival_date: date = Query(default=date.today(), description="Дата заезда"),
-    departure_date: date = Query(
-        default=date.today() + relativedelta(days=1), description="Дата выезда"
-    ),
-) -> ListHotelsWithRoomsSchema:
-    return await HotelService.search_by(
-        city=city_name.capitalize(),
-        arrival_date=arrival_date,
-        departure_date=departure_date,
-    )
-
-
-@router.get(
-    path="/region/results",
-    status_code=status.HTTP_200_OK,
-    response_model=ListHotelsWithRoomsSchema,
-    summary="Поиск отелей по региону",
-    description="Поиск отелей доступен для неавторизованных пользователей. Возвращает список отелей по региону, "
-    "где есть хотя бы один свободный для бронирования номер.",
-    responses={
-        status.HTTP_200_OK: {
-            "model": ListHotelsWithRoomsSchema,
-            "description": "Ответ на успешный запрос получения списка отелей по региону.",
-        }
-    },
-)
-async def get_hotels_by_region(
-    region_name: str = Query(
-        default="Алтай", description="Название региона. Не чувствителен к регистру."
-    ),
-    arrival_date: date = Query(default=date.today(), description="Дата заезда"),
-    departure_date: date = Query(
-        default=date.today() + relativedelta(days=1), description="Дата выезда"
-    ),
-) -> ListHotelsWithRoomsSchema:
-    return await HotelService.search_by(
-        region=region_name.capitalize(),
-        arrival_date=arrival_date,
-        departure_date=departure_date,
-    )
-
-
-@router.get(
-    path="/country/results",
-    status_code=status.HTTP_200_OK,
-    response_model=ListHotelsWithRoomsSchema,
-    summary="Поиск отелей по стране",
+    summary="Поиск отелей по городу, стране или региону.",
     description="Поиск отелей доступен для неавторизованных пользователей. Возвращает список отелей по стране, "
     "где есть хотя бы один свободный для бронирования номер.",
     responses={
@@ -90,9 +30,10 @@ async def get_hotels_by_region(
         }
     },
 )
-async def get_hotels_by_country(
-    country_name: str = Query(
-        default="Россия", description="Название страны. Не чувствителен к регистру."
+async def get_hotels(
+    location_name: str = Query(default="Москва", description="Название локации"),
+    location_type: str = Query(
+        default="city", description="Тип локации (city, region, country)"
     ),
     arrival_date: date = Query(default=date.today(), description="Дата заезда"),
     departure_date: date = Query(
@@ -100,7 +41,8 @@ async def get_hotels_by_country(
     ),
 ) -> ListHotelsWithRoomsSchema:
     return await HotelService.search_by(
-        country=country_name.capitalize(),
+        location_name=location_name.capitalize(),
+        location_type=location_type,
         arrival_date=arrival_date,
         departure_date=departure_date,
     )
@@ -111,7 +53,7 @@ async def get_hotels_by_country(
     status_code=status.HTTP_200_OK,
     response_model=HotelsSchema,
     summary="Получение отеля",
-    description="Получение отеля по ID. Возможно получить отеля даже без свободных номеров.",
+    description="Получение отеля по ID. Возможно получить отели без свободных номеров.",
     responses={
         status.HTTP_200_OK: {
             "model": HotelsSchema,

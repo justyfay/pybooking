@@ -1,0 +1,121 @@
+<!doctype html>
+{% extends "base.html" %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block links %}
+    <script src="{{ url_for('static', path='js/search.js') }}"></script>
+    {% endblock %}
+    <title id="searchTitle">Страница поиска - PyBooking</title>
+</head>
+
+<body>
+
+{% block header %}
+<div class="p-lg-4 text-center bg-image" style="height: 75px;">
+    {% endblock %}
+
+    {% block content %}
+
+    <div class="d-flex bd-highlight" style="padding-left: 9.7%; padding-right: 10%;">
+        <div class="p-2 flex-fill bd-highlight">
+            <div class="card p-lg-4 py-5" style=" width: 160%; margin-top: 13%">
+                <h5 class="font-weight-bold" style="padding-bottom: 10%;">Звезды</h5>
+                <form class="brand">
+                    <div class="mt-1 d-flex justify-content-between align-items-center">
+                        <div class="small-ratings">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                        </div>
+                    </div>
+                    <div class="mt-1 d-flex justify-content-between align-items-center">
+                        <div class="small-ratings">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                        </div>
+                    </div>
+                    <div class="mt-1 d-flex justify-content-between align-items-center">
+                        <div class="small-ratings">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                        </div>
+                    </div>
+                    <div class="mt-1 d-flex justify-content-between align-items-center">
+                        <div class="small-ratings">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                            <i class="fa fa-star rating-color"></i>
+                            <i class="fa fa-star rating-color"></i>
+                        </div>
+                    </div>
+                    <div class="mt-1 d-flex justify-content-between align-items-center">
+                        <div class="small-ratings">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                            <i class="fa fa-star rating-color"></i>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="p-2 flex-fill bd-highlight">
+
+            {% if hotels %}
+            {% for hotel in hotels %}
+
+            <div class="card mb-3" style="margin-top: 2%; margin-left: 8%;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="http://placehold.it/300x300/" class="img-fluid rounded-start w-100 h-100"
+                             alt="Фотография отеля">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{hotel.name}}</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                                additional content. This content is a little bit longer.</p>
+                            <p class="card-text text-sm-left"><small
+                                    class="text-body-secondary">{{hotel.amenities}}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+            {% else %}
+
+            <div class="card mb-3 text-center" style="margin-top: 2%; margin-left: 8.5%; background-color: burlywood">
+                <div class="row g-0">
+                        <div class="card-body">
+                            <h4 class="card-title">Ничего не найдено</h4>
+                            <p class="card-text" style="font-size: 22px">Попробуйте изменить условия поиска. Установите другие даты заезда и выезда, страну, город или регион. </p>
+                            <a href="/" class="btn btn-primary">На главную</a>
+
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+        <div class="flex-fill" style="margin-bottom: 10%; margin-top: 0.7%;">
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Ad38de143face89997e70a848d51ed2c2f79f0311519f83674d316f0ec4529212&amp;source=constructor"
+                    width="600" height="600" frameborder="0" style="padding-top: 2%; border-radius: 3%; "></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+</body>
