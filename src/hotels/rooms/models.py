@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from sqlalchemy import JSON, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
@@ -16,4 +16,4 @@ class Rooms(Base):
     price: Mapped[int]
     room_amenities: Mapped[list[str]] = mapped_column(JSON)
     quantity: Mapped[int]
-    image_id: Mapped[int]
+    images: Mapped[List[str]] = mapped_column(JSON, nullable=True)

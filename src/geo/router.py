@@ -1,9 +1,7 @@
-from typing import List
-
 from fastapi import APIRouter, Query
 from starlette import status
 
-from src.geo.schemas import GeoSchema
+from src.geo.schemas import Locations
 from src.geo.service import GeoService
 
 router = APIRouter(
@@ -15,12 +13,12 @@ router = APIRouter(
 @router.get(
     path="",
     status_code=status.HTTP_200_OK,
-    response_model=List[GeoSchema],
+    response_model=Locations,
     summary="Поиск локаций.",
     description="Запрос вернет список локаций по совпадению в названии.",
     responses={
         status.HTTP_200_OK: {
-            "model": List[GeoSchema],
+            "model": Locations,
             "description": "Ответ на успешный запрос получения списка локаций.",
         }
     },
@@ -29,5 +27,6 @@ async def get_location(
     location: str = Query(
         default="Москва", description="Название города, региона или страны."
     ),
-) -> List[GeoSchema]:
-    return await GeoService.search_by(location=location.capitalize())
+) -> Locations:
+    locations = await GeoService.search_by(location=location.capitalize())
+    return Locations.model_validate(locations)

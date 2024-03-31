@@ -68,9 +68,13 @@ class BaseDb:
                 return result
         except (SQLAlchemyError, Exception) as e:
             if isinstance(e, SQLAlchemyError):
-                msg: str = "Database Exc: Cannot insert data into table"
+                msg: str = (
+                    "Database Exc: Cannot insert data into table. Details: {}".format(e)
+                )
             elif isinstance(e, Exception):
-                msg: str = "Unknown Exc: Cannot insert data into table"
+                msg: str = (
+                    "Unknown Exc: Cannot insert data into table. Details: {}".format(e)
+                )
 
             logger.error(msg, extra={"table": cls.model.__tablename__}, exc_info=True)
             return None

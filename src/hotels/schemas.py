@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, RootModel
 
@@ -11,16 +11,18 @@ class HotelsSchema(BaseModel):
     id: int
     name: str
     city_id: int
-    location: str
+    location: Optional[str]
     stars: int
-    amenities: List
+    amenities: List[str]
     rooms_quantity: int
+    min_price: Optional[float]
+    coordinates: Optional[Dict]
 
 
 class HotelsWithRoomsSchema(HotelsSchema):
     """Схема для получения информации по отелю с количеством свободных номеров и фотографией."""
 
-    image_id: int
+    images: List[str] | None
     room_offers: int
 
 

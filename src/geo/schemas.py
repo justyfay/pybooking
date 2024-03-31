@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from typing import List
+
+from pydantic import BaseModel, RootModel
 
 
 class GeoSchema(BaseModel):
@@ -6,3 +8,7 @@ class GeoSchema(BaseModel):
 
     name: str
     type: str
+
+
+class Locations(RootModel):
+    root: List[GeoSchema]

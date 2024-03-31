@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 from sqlalchemy import JSON
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -10,8 +12,10 @@ class Hotels(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
     city_id: Mapped[int] = mapped_column(nullable=False)
-    location: Mapped[str]
+    location: Mapped[Optional[str]]
     stars: Mapped[int]
-    amenities: Mapped[list[str]] = mapped_column(JSON)
+    amenities: Mapped[List[str]] = mapped_column(JSON)
     rooms_quantity: Mapped[int]
-    image_id: Mapped[int]
+    images: Mapped[List[str]] = mapped_column(JSON, nullable=True)
+    min_price: Mapped[Optional[float]]
+    coordinates: Mapped[str] = mapped_column(JSON, nullable=True)
