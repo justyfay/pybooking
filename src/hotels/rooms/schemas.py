@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, RootModel
 
@@ -9,11 +9,11 @@ class RoomsSchema(BaseModel):
     id: int
     hotel_id: int
     name: str
-    description: str
+    description: Optional[str]
     room_amenities: List
     price: int
     quantity: int
-    image_id: int
+    images: Optional[List]
     total_cost: int
     room_offers: int
 

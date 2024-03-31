@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% block links %}
     <script src="{{ url_for('static', path='js/search.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/search.css') }}">
     {% endblock %}
     <title id="searchTitle">Страница поиска - PyBooking</title>
 </head>
@@ -23,7 +24,7 @@
 
     <div class="d-flex bd-highlight" style="padding-left: 9.7%; padding-right: 10%;">
         <div class="p-2 flex-fill bd-highlight">
-            <div class="card p-lg-4 py-5" style=" width: 160%; margin-top: 13%">
+            <div class="card p-lg-4 py-5" style=" width: 158%; margin-top: 13%">
                 <h5 class="font-weight-bold" style="padding-bottom: 10%;">Звезды</h5>
                 <form class="brand">
                     <div class="mt-1 d-flex justify-content-between align-items-center">
@@ -74,34 +75,53 @@
             {% if hotels %}
             {% for hotel in hotels %}
 
-            <div class="card mb-3" style="margin-top: 2%; margin-left: 8%;">
+            <div class="card mb-3 hotel-card" style="margin-top: 2%; margin-left: 8%;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="http://placehold.it/300x300/" class="img-fluid rounded-start w-100 h-100"
-                             alt="Фотография отеля">
+                        {% if hotel.images %}
+                        <img src="{{hotel.images[loop.first]}}" class="img-fluid rounded-start w-100 h-100"
+                             alt="{{hotel.name}}">
+                        {% else %}
+                        <img src="http://placehold.it/400x400/" class="img-fluid rounded-start w-100 h-100">
+                        {% endif %}
+
                     </div>
                     <div class="col-md-8">
-                        <div class="card-body">
+                        <div class="card-body pb-3 ">
+                            <div class="small-ratings mb-2">
+                                {% for n in range(hotel.stars) %}
+                                <i class="fa fa-star rating-color"></i>
+                                {% endfor %}
+                            </div>
                             <h5 class="card-title">{{hotel.name}}</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                                additional content. This content is a little bit longer.</p>
-                            <p class="card-text text-sm-left"><small
-                                    class="text-body-secondary">{{hotel.amenities}}</small></p>
+                            {% for amenity in hotel.amenities %}
+                            <small class="text-body-secondary">
+                                <span class="badge badge-pill badge-info">{{amenity}}</span>
+                            </small>
+                            {% endfor %}
+
+                            <p class="card-text pt-2 text-muted"><span
+                                    class="d-inline-block text-truncate"
+                                    style="max-width: 396px;" title="{{hotel.location}}">{{hotel.location}}</span></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p><small>Цена от:</small> <strong>{{hotel.min_price}}</strong></p>
+                                <a href="#" class="btn btn-primary mb-3" style="background-color: #005bff">Забронировать</a></div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
             {% endfor %}
             {% else %}
 
-            <div class="card mb-3 text-center" style="margin-top: 2%; margin-left: 8.5%; background-color: burlywood">
+            <div class="card mb-3 text-center" style="margin-top: 2%; margin-left: 8%; background-color: #f7d9b0; border: solid darkgrey 1px">
                 <div class="row g-0">
-                        <div class="card-body">
-                            <h4 class="card-title">Ничего не найдено</h4>
-                            <p class="card-text" style="font-size: 22px">Попробуйте изменить условия поиска. Установите другие даты заезда и выезда, страну, город или регион. </p>
-                            <a href="/" class="btn btn-primary">На главную</a>
-
+                    <div class="card-body">
+                        <h4 class="card-title">Ничего не найдено</h4>
+                        <p class="card-text" style="font-size: 22px">Попробуйте изменить условия поиска. Установите
+                            другие даты заезда и выезда, страну, город или регион. </p>
+                        <a href="/" class="btn btn-primary" style="background-color: #005bff">На главную</a>
                     </div>
                 </div>
             </div>
