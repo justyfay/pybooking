@@ -10,116 +10,134 @@
     {% block links %}
     <script src="{{ url_for('static', path='js/search.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', path='css/search.css') }}">
+
     {% endblock %}
     <title id="searchTitle">Страница поиска - PyBooking</title>
 </head>
 
 <body>
-
 {% block header %}
-<div class="p-lg-4 text-center bg-image" style="height: 75px;">
+<div class="p-lg-3 text-center bg-image" style="height: 40px;">
     {% endblock %}
 
     {% block content %}
 
-    <div class="d-flex bd-highlight" style="padding-left: 9.7%; padding-right: 10%;">
-        <div class="p-2 flex-fill bd-highlight">
-            <div class="card p-lg-4 py-5" style=" width: 158%; margin-top: 13%">
-                <h5 class="font-weight-bold" style="padding-bottom: 10%;">Звезды</h5>
-                <form class="brand">
-                    <div class="mt-1 d-flex justify-content-between align-items-center">
-                        <div class="small-ratings">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                        </div>
+
+    <div class="d-flex bd-highlight content-all" style="padding-left: 10%; padding-right: 10%;">
+        <div class="p-2 flex-fill card stars-rate flex-shrink-0"
+             style="height: 18%;">
+            <h5 class="font-weight-bold" style="padding: 5%">Звезды</h5>
+            <form class="brand col-7 stars-rate-line" style="padding: 5%">
+                <div class="mt-1 d-flex justify-content-between align-items-center">
+                    <div class="small-ratings flex-shrink-0 ">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
                     </div>
-                    <div class="mt-1 d-flex justify-content-between align-items-center">
-                        <div class="small-ratings">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                        </div>
+                </div>
+                <div class="mt-1 d-flex justify-content-between align-items-center">
+                    <div class="small-ratings flex-shrink-0">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
                     </div>
-                    <div class="mt-1 d-flex justify-content-between align-items-center">
-                        <div class="small-ratings">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                        </div>
+                </div>
+                <div class="mt-1 d-flex justify-content-between align-items-center">
+                    <div class="small-ratings flex-shrink-0">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
                     </div>
-                    <div class="mt-1 d-flex justify-content-between align-items-center">
-                        <div class="small-ratings">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                            <i class="fa fa-star rating-color"></i>
-                            <i class="fa fa-star rating-color"></i>
-                        </div>
+                </div>
+                <div class="mt-1 d-flex justify-content-between align-items-center">
+                    <div class="small-ratings flex-shrink-0">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                        <i class="fa fa-star rating-color"></i>
+                        <i class="fa fa-star rating-color"></i>
                     </div>
-                    <div class="mt-1 d-flex justify-content-between align-items-center">
-                        <div class="small-ratings">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                            <i class="fa fa-star rating-color"></i>
-                        </div>
+                </div>
+                <div class="mt-1 d-flex justify-content-between align-items-center">
+                    <div class="small-ratings flex-shrink-0">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                        <i class="fa fa-star rating-color"></i>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
-        <div class="p-2 flex-fill bd-highlight">
+        <div class="p-2 flex-fill bd-highlight content-hotels" style="width: 20%">
 
             {% if hotels %}
             {% for hotel in hotels %}
-
-            <div class="card mb-3 hotel-card" style="margin-top: 2%; margin-left: 8%;">
-                <div class="row g-0">
-                    <div class="col-md-4">
+            <div class="container d-flex mt-1 p-1 " id="searchResults">
+                <div class="card w-100 hotel-card">
+                    <div class="row g-0">
                         {% if hotel.images %}
-                        <img src="{{hotel.images[loop.first]}}" class="img-fluid rounded-start w-100 h-100"
-                             alt="{{hotel.name}}">
+                        <div class="col-md-4 p-0"
+                             style="background-image: url('{{hotel.images[loop.first]}}'); background-size: cover; background-repeat: no-repeat; border-bottom-left-radius: 7px; border-top-left-radius: 7px;"></div>
                         {% else %}
-                        <img src="http://placehold.it/400x400/" class="img-fluid rounded-start w-100 h-100">
+
+                        <div class="col-md-4 p-0"
+                             style="background-color: #dbdbdb; border-bottom-left-radius: 7px; border-top-left-radius: 7px; background-size: cover; background-repeat: no-repeat;"></div>
                         {% endif %}
 
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body pb-3 ">
-                            <div class="small-ratings mb-2">
-                                {% for n in range(hotel.stars) %}
-                                <i class="fa fa-star rating-color"></i>
-                                {% endfor %}
-                            </div>
-                            <h5 class="card-title">{{hotel.name}}</h5>
-                            {% for amenity in hotel.amenities %}
-                            <small class="text-body-secondary">
-                                <span class="badge badge-pill badge-info">{{amenity}}</span>
-                            </small>
-                            {% endfor %}
 
-                            <p class="card-text pt-2 text-muted"><span
-                                    class="d-inline-block text-truncate"
-                                    style="max-width: 396px;" title="{{hotel.location}}">{{hotel.location}}</span></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p><small>Цена от:</small> <strong>{{hotel.min_price}}</strong></p>
-                                <a href="#" class="btn btn-primary mb-3" style="background-color: #005bff">Забронировать</a></div>
+                        <div class="col-md-8">
+                            <div class="card-body p-1 m-2">
+                                <div class="small-ratings ">
+                                    {% for n in range(hotel.stars) %}
+                                    <i class="fa fa-star rating-color"></i>
+                                    {% endfor %}
+                                </div>
+                                <h6 class="card-title text-truncate hotel-card-title">
+                                    {{hotel.name}}
+                                </h6>
+                                <p class="card-text mb-2">
+                                    {% if hotel.amenities %}
+                                    {% for amenity in hotel.amenities %}
+                                    <small class="text-body-secondary">
+                                        <span class="badge badge-pill badge-info">{{amenity}}</span>
+                                    </small>
+                                    {% endfor %}
+                                    {% else %}
+                                    <small class="text-body-secondary">
+                                        <span class="badge badge-pill badge-danger">Отсутствует информация по удобствам</span>
+                                    </small>
+                                    {% endif %}
+                                </p>
+                                <p class="card-text text-muted mb-0">
+                                    <span
+                                            class="d-inline-block text-truncate"
+                                            style="max-width: 370px; font-size: 14px"
+                                            title="{{hotel.location}}">{{hotel.location}}</span></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="mb-0"><small>Цена от:</small> <strong>{{hotel.min_price}}₽</strong></p>
+                                    <a href="#" class="btn btn-primary btn-sm mb-0"
+                                       style="background-color: #005bff; margin-right: 3%">Забронировать</a></div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
             {% endfor %}
+
+            <nav aria-label="Навигация по страницам">
+                <ul class="pagination justify-content-center" id="paginationList">
+                </ul>
+            </nav>
             {% else %}
 
-            <div class="card mb-3 text-center" style="margin-top: 2%; margin-left: 8%; background-color: #f7d9b0; border: solid darkgrey 1px">
+            <div class="card mb-3 text-center"
+                 style="margin-top: 1.2%; background-color: #f7d9b0; border: solid darkgrey 1px; width: 100%">
                 <div class="row g-0">
                     <div class="card-body">
                         <h4 class="card-title">Ничего не найдено</h4>
-                        <p class="card-text" style="font-size: 22px">Попробуйте изменить условия поиска. Установите
+                        <p class="card-text" style="font-size: 18px">Попробуйте изменить условия поиска. Установите
                             другие даты заезда и выезда, страну, город или регион. </p>
                         <a href="/" class="btn btn-primary" style="background-color: #005bff">На главную</a>
                     </div>
@@ -129,13 +147,25 @@
             {% endif %}
 
         </div>
-        <div class="flex-fill" style="margin-bottom: 10%; margin-top: 0.7%;">
-            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Ad38de143face89997e70a848d51ed2c2f79f0311519f83674d316f0ec4529212&amp;source=constructor"
-                    width="600" height="600" frameborder="0" style="padding-top: 2%; border-radius: 3%; "></iframe>
+        {% if hotels %}
+        <div class="flex-fill map-card" style="margin-bottom: 48%; padding-top: 1%">
+
+            <script type="text/javascript" charset="utf-8" async
+                    src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A10f00bc154c9ef3746724966830773147f14fa84ea231223cc01bc22695a4bda&amp;width=100%25&amp;height=710&amp;lang=en_FR&amp;scroll=true"></script>
+
         </div>
+        {% else %}
+        <div class="flex-fill map-stub"
+             style="margin-bottom: 2%; margin-top: 1.2%;background-color: #c9c9c9; height: 700px; border-radius: 4px; ; width: 12%">
+
+
+        </div>
+        {% endif %}
     </div>
 </div>
-
+<script type="text/javascript">
+    buildPagination('{{pages}}', '{{current_page}}');
+</script>
 {% endblock %}
 
 </body>

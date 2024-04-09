@@ -19,6 +19,14 @@ class HotelsSchema(BaseModel):
     coordinates: Optional[Dict]
 
 
+class HotelsPaginate(BaseModel):
+    results: List[HotelsSchema]
+    current_page: int
+    limit: int
+    pages: int
+    total: int
+
+
 class HotelsWithRoomsSchema(HotelsSchema):
     """Схема для получения информации по отелю с количеством свободных номеров и фотографией."""
 
