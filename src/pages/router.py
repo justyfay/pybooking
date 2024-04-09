@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from starlette import status
 
 from src.hotels.router import get_hotels
+from src.hotels.schemas import HotelsPaginate
 
 templates = Jinja2Templates(directory="src/templates")
 
@@ -37,16 +38,19 @@ async def get_search_page(
     location_type: str = Query(default="city", description="Тип локации."),
     arrival_date: date = Query(default=date.today(), description="Дата заезда."),
     departure_date: date = Query(default=date.today(), description="Дата выезда."),
-    hotels=Depends(get_hotels),
+    hotels: HotelsPaginate = Depends(get_hotels),
 ):
     return templates.TemplateResponse(
         "search.html",
         {
             "request": request,
             "location_name": location_name,
-            "hotels": hotels.root,
+            "hotels": hotels.results,
             "location_type": location_type,
             "arrival_date": arrival_date,
             "departure_date": departure_date,
+            "current_page": hotels.current_page,
+            "pages": hotels.pages,
+            "limit": hotels.limit,
         },
     )

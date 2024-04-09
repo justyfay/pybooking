@@ -1,14 +1,17 @@
+import math
 from datetime import date
-from typing import Optional
+from typing import List, Optional, Tuple
 
 from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, Path, Query
 from sqlalchemy import RowMapping
 from starlette import status
 
+from src.constants import HotelsEnum
 from src.hotels.db import HotelsDb
-from src.hotels.schemas import HotelsSchema, ListHotelsWithRoomsSchema
+from src.hotels.schemas import HotelsPaginate, HotelsSchema
 from src.hotels.service import HotelService
+from src.hotels.utils import paginate
 
 router = APIRouter(
     prefix="/hotels",
@@ -19,13 +22,13 @@ router = APIRouter(
 @router.get(
     path="/results",
     status_code=status.HTTP_200_OK,
-    response_model=ListHotelsWithRoomsSchema,
+    response_model=HotelsPaginate,
     summary="Поиск отелей по городу, стране или региону.",
-    description="Поиск отелей доступен для неавторизованных пользователей. Возвращает список отелей по стране, "
-    "где есть хотя бы один свободный для бронирования номер.",
+    description="Поиск отелей доступен для неавторизованных пользователей. Возвращает список отелей по указанной "
+    "локации, где есть хотя бы один свободный для бронирования номер.",
     responses={
         status.HTTP_200_OK: {
-            "model": ListHotelsWithRoomsSchema,
+            "model": HotelsPaginate,
             "description": "Ответ на успешный запрос получения списка отелей по стране.",
         }
     },
@@ -39,12 +42,30 @@ async def get_hotels(
     departure_date: date = Query(
         default=date.today() + relativedelta(days=1), description="Дата выезда"
     ),
-) -> ListHotelsWithRoomsSchema:
-    return await HotelService.search_by(
+    page: int = Query(default=1, description="Страница выдачи"),
+    limit: int = Query(default=10, description="Количество результатов на странице"),
+) -> HotelsPaginate:
+    hotels = await HotelService.search_by(
         location_name=location_name.capitalize(),
         location_type=location_type,
         arrival_date=arrival_date,
         departure_date=departure_date,
+    )
+
+    hotels_with_pagination: Tuple[List, int, int] = paginate(
+        items=hotels.root, limit=limit, page_number=page
+    )
+
+    hotels_info: List[HotelsSchema] = hotels_with_pagination[HotelsEnum.HOTELS.value]
+    for hotel in hotels_info:
+        hotel.min_price = math.ceil(hotel.min_price)
+
+    return HotelsPaginate.model_construct(
+        results=hotels_info,
+        pages=hotels_with_pagination[HotelsEnum.PAGES.value],
+        total=hotels_with_pagination[HotelsEnum.COUNT_HOTELS.value],
+        current_page=page,
+        limit=limit,
     )
 
 

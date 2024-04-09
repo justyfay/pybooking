@@ -3,3 +3,321 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
     transition: all linear 200ms;
 }
+
+.stars-rate {
+    width: 13%;
+    height: 100vh;
+    top: 7.4vh;
+    position: sticky;
+    padding-top: 1rem;
+    max-width: 13%;
+    min-width: 13%;
+    margin-top: 1.2%;
+}
+
+.map-card {
+    height: 5.5vh;
+    top: 6vh;
+    position: sticky;
+    background-size: cover
+}
+
+iframe {
+    border-radius: 8px;
+}
+
+.content-all {
+    min-height: 100%;
+}
+
+@media screen and (max-width: 1800px) {
+    .hotel-card-title {
+        width: 340px;
+        max-width: 340px;
+    }
+
+    p .text-truncate {
+        width: 340px;
+        max-width: 340px;
+    }
+}
+
+@media screen and (max-width: 1700px) {
+    .stars-rate {
+        margin-top: 1.4%;
+    }
+
+    .map-card {
+        width: 20%;
+    }
+
+    .hotel-card-title {
+        width: 320px;
+        max-width: 320px;
+    }
+
+    p .text-truncate {
+        width: 320px;
+        max-width: 320px;
+    }
+
+}
+
+@media screen and (max-width: 1600px) {
+    .map-card {
+        width: 19%;
+    }
+
+    .hotel-card-title {
+        width: 310px;
+        max-width: 310px;
+    }
+
+    .stars-rate {
+        width: 13%;
+        max-width: 13%;
+        min-width: 13%;
+    }
+
+    p .text-truncate {
+        width: 310px;
+        max-width: 310px;
+    }
+
+}
+
+@media screen and (max-width: 1500px) {
+    .map-card {
+        margin-top: 0.1%;
+        width: 18%;
+    }
+
+    .hotel-card-title {
+        width: 300px;
+        max-width: 300px;
+    }
+
+    p .text-truncate {
+        width: 290px;
+        max-width: 290px;
+    }
+
+    .hotel-card-title {
+        width: 290px;
+    }
+
+    .stars-rate {
+        margin-top: 1.5%;
+        width: 13%;
+        max-width: 13%;
+        min-width: 13%;
+    }
+
+    .stars-rate-line .fa-star {
+        width: 13px;
+        margin: 2px;
+
+
+    }
+
+    .stars-rate-line .form-check-input {
+        width: 17px;
+        height: 17px;
+        margin-top: 4px;
+        margin-right: 0;
+    }
+
+    iframe {
+        height: 500px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .map-card {
+        width: 17%;
+    }
+
+    .stars-rate {
+        margin-top: 1.6%;
+        width: 14%;
+        max-width: 14%;
+        min-width: 14%;
+    }
+
+    .stars-rate-line .fa-star {
+        width: 8px;
+        margin: 4px;
+    }
+
+    p .text-truncate {
+        width: 260px;
+    }
+
+    .stars-rate-line .form-check-input {
+        width: 15px;
+        height: 15px;
+        margin-top: 5px;
+        margin-right: 0;
+    }
+
+    .hotel-card-title {
+        width: 260px;
+    }
+
+    iframe {
+        height: 500px;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .map-card {
+        width: 16%;
+        margin-top: 0.3%;
+    }
+
+    .stars-rate-line .fa-star {
+        width: 7px;
+        margin: 4px;
+
+    }
+
+    p .text-truncate {
+        width: 250px;
+    }
+
+    .stars-rate {
+        margin-top: 1.7%;
+        padding: unset;
+        width: 15%;
+        max-width: 15%;
+        min-width: 15%;
+    }
+
+    .stars-rate-line .form-check-input {
+        width: 14px;
+        height: 14px;
+        margin-top: 8px;
+        margin-right: 0;
+    }
+
+    .hotel-card-title {
+        width: 255px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .map-card {
+        width: 12%;
+    }
+
+    .stars-rate {
+        width: 15%;
+        max-width: 15%;
+        min-width: 15%;
+    }
+
+    .stars-rate-line .fa-star {
+        width: 1px;
+        margin: 6px;
+        padding-left: 0;
+    }
+
+    .stars-rate-line .form-check-input {
+        width: 14px;
+        height: 14px;
+        margin-top: 8px;
+        margin-right: 0;
+    }
+
+    p .text-truncate {
+        width: 235px;
+    }
+
+    .hotel-card-title {
+        width: 240px;
+    }
+
+}
+
+@media screen and (max-width: 1100px) {
+    .map-card {
+        display: none;
+    }
+
+    .map-stub {
+        display: none;
+    }
+
+    .content-all {
+        width: 100%;
+    }
+
+    .stars-rate {
+        margin-top: 2.2%;
+        width: 17%;
+        max-width: 17%;
+        min-width: 17%;
+    }
+
+    .stars-rate-line .fa-star {
+        width: 1px;
+        margin: 6px;
+        padding-left: 0;
+    }
+
+    .stars-rate-line .form-check-input {
+        width: 14px;
+        height: 14px;
+        margin-top: 8px;
+        margin-right: 0;
+    }
+
+    .hotel-card-title {
+        width: 320px;
+        max-width: 320px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .content-all {
+        width: 100%;
+    }
+
+    .stars-rate {
+        display: none;
+    }
+
+    .map-card {
+        display: none;
+    }
+
+    .map-stub {
+        display: none;
+    }
+
+    .content-hotels {
+        width: 100%;
+    }
+
+    .hotel-card-title {
+        width: 350px;
+        max-width: 350px;
+    }
+
+    p .text-truncate {
+        width: 350px;
+        max-width: 350px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .hotel-card-title {
+        width: 300px;
+        max-width: 300px;
+    }
+
+    p .text-truncate {
+        width: 300px;
+        max-width: 300px;
+    }
+}

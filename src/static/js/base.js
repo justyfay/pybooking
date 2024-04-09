@@ -39,9 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     break;
                 }
             }
-            document.addEventListener('DOMContentLoaded', e => {
-                $('#searchLocation').autocomplete()
-            }, false);
         }
     )
 })
@@ -62,8 +59,8 @@ async function searchPage() {
         method: 'GET',
     }).then(response => {
         if (response.status === 200) {
-            window.location.href = `/search?location_name=${location}&location_type=${locationType}&arrival_date=${startDate}&departure_date=${endDate}`
+            window.location.href = `/search?page=1&location_name=${location}&location_type=${locationType}&arrival_date=${startDate}&departure_date=${endDate}`
         }
-    }).catch(error => {
     });
+
 }

@@ -1,9 +1,79 @@
 .btn.btn-primary:active,
 .btn.btn-primary:hover,
 .btn.btn-primary:focus {
-  background-color: #0051e7 !important;
+    background-color: #0051e7 !important;
 }
 
-.rating-color{
-    color:#fbc634 !important;
+.rating-color {
+    color: #fbc634 !important;
+}
+
+.btn-primary {
+    font-size: 13px
+}
+
+@media screen and (max-width: 1300px) {
+
+    .form-group {
+        height: 40px;
+    }
+
+    .start-date {
+        height: 40px;
+    }
+
+    .end-date {
+        height: 40px;
+    }
+
+    .btn-search {
+        height: 40px;
+    }
+
+    .btn-primary {
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width: 1230px) {
+    .btn-primary {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 1230px) {
+    .btn-primary {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .btn-search {
+        margin-top: 10px;
+        height: 30px;
+    }
+
+    .btn-primary {
+        font-size: 14px;
+    }
+
+    .form-group {
+        height: 30px;
+    }
+
+    .start-date {
+        height: 30px;
+    }
+
+    .end-date {
+        margin-top: 10px;
+        height: 30px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .start-date {
+        margin-top: 10px;
+        height: 30px;
+    }
 }

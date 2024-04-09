@@ -25,7 +25,7 @@
     <title>Бронирование отелей - PyBooking</title>
 </head>
 <header>
-    <nav class="navbar navbar-expand-lg bg-body fixed-top" style="margin-left: 10%; margin-right: 10%;">
+    <nav class="navbar navbar-expand-lg bg-body fixed-top" style="margin-left: 10%; margin-right: 10%">
         <div class="container-fluid">
             <a class="active" href="/" style="color: #005bff; margin-right: 0.5%;"><i class="fab fa-python fa-lg"></i>
                 PyBooking</a>
@@ -58,7 +58,7 @@
 </header>
 <body>
 
-<div class=".d-flex .flex-nowrap  justify-content-center align-items-center mt-4 " style="width: 80%; margin-left: 10%; border-radius: 10px; background-color: #032244">
+<div class=".d-flex .flex-nowrap  justify-content-center align-items-center mt-4 search-panel " style="width: 80%; margin-left: 10%; border-radius: 10px; background-color: #032244">
     <div class="row justify-content-between" style="padding: 2%">
         <form class="form-group col-lg-5 col-sm-6">
             <input style="height: 120%;" type="text" class="form-control col-lg-5 col-sm-6" placeholder="Место отдыха"
@@ -68,21 +68,21 @@
             </datalist>
         </form>
 
-        <div class="col-lg-2 col-sm-6 flex-fill">
+        <div class="col-lg-2 col-sm-6 flex-fill start-date">
             <input id="startDate" placeholder="Дата заезда" style="height: 120%" class="form-control"
                    onfocus="(this.type='date')" onblur="(this.type='text')" onclick="getCurrentDate()"/>
             <span id="startDateSelected"></span>
         </div>
 
-        <div class="col-lg-2 col-sm-6 flex-fill">
+        <div class="col-lg-2 col-sm-6 flex-fill end-date">
             <input id="endDate" style="height: 120%" placeholder="Дата выезда" class="form-control"
                    onfocus="(this.type='date')" onblur="(this.type='text')" onclick="getCurrentDate()"/>
             <span id="endDateSelected"></span>
         </div>
 
-        <div class="col-lg-2">
-            <a class="btn btn-primary w-100 pt-lg-3 button-primary-override:focus" onclick="searchPage()"
-               style="height: 120%; background-color: #005bff; font-size: 13px">Найти отели</a>
+        <div class="col-lg-2 btn-search">
+            <a class="btn btn-primary w-100 pt-lg-3 button-primary-override:focus " onclick="searchPage()"
+               style="height: 120%; background-color: #005bff;">Найти отели</a>
         </div>
     </div>
 </div>
@@ -93,7 +93,7 @@
 <footer class="bg-body-tertiary text-center" style="width: 80%; margin-left: 10%;">
     <div class="text-center p-3" style="width: 100%; background-color: rgba(0, 0, 0, 0.05);">
         © 2024 Copyright:
-        <a class="text-body" href="https://github.com/justyfay/pybooking">Github</a>
+        <a class="text-body" href="https://github.com/justyfay/pybooking">justyfay</a>
     </div>
 </footer>
 </html>
