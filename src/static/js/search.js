@@ -1,14 +1,62 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
     const params = urlParams()
 
     document.querySelector('[id=searchLocation]').value = params.location;
-    document.getElementById("searchLocation").setAttribute('value-type', params.type);
+    document.getElementById('searchLocation').setAttribute('value-type', params.type);
     document.querySelector('[id=startDate]').value = params.startDate;
     document.querySelector('[id=endDate]').value = params.endDate;
 
     if (params.location && params.startDate && params.endDate != null) {
         document.title = `${params.location}, ${params.startDate} - ${params.endDate}`;
     }
+    const url = new URLSearchParams(window.location.search);
+    let checkboxes = document.getElementsByClassName('form-check-input')
+
+    if (params.stars !== null) {
+        let paramsArray = params.stars.split(' ')
+        for (let y = 0; y < paramsArray.length; y++) {
+            try {
+                document.querySelector(`input[value="${paramsArray[y]}"]`).setAttribute('checked', 'true')
+
+            } catch (TypeError) {
+
+            }
+
+        }
+    }
+
+    try {
+        if (params.stars.trim() === '') {
+            url.delete('stars')
+            url.set('page', "1")
+            window.location.search = url.toString()
+        }
+    } catch (TypeError) {
+
+    }
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].addEventListener('click', function () {
+            let checkboxValue = checkboxes[i].getAttribute('value')
+            let actualParams = urlParams()
+            if (checkboxes[i].getAttribute('checked') === null) {
+                url.set('stars', checkboxValue);
+                url.set('page', "1");
+            }
+            if (params.stars !== null && params.stars.indexOf(checkboxValue) === -1) {
+                let newVal = checkboxValue + ' ' + params.stars
+                url.set('stars', newVal)
+                url.set('page', "1");
+            }
+            if (checkboxes[i].getAttribute('checked') !== null) {
+                checkboxes[i].removeAttribute('checked')
+                let newVal = actualParams.stars.replace(checkboxValue, "")
+                url.set('stars', newVal)
+                url.set('page', "1");
+            }
+            window.location.search = url.toString()
+        });
+    }
+
 })
 
 function urlParams() {
@@ -18,19 +66,28 @@ function urlParams() {
     let type = searchParams.get('location_type');
     let startDate = searchParams.get('arrival_date');
     let endDate = searchParams.get('departure_date');
-    return {location, type, startDate, endDate}
+    let stars = searchParams.get('stars');
+    return {location, type, startDate, endDate, stars}
+}
+
+function urlBuilder(currentPage) {
+    const params = urlParams()
+    let url = `/search?page=${currentPage}&location_name=${params.location}&location_type=${params.type}&arrival_date=${params.startDate}&departure_date=${params.endDate}`
+    if (params.stars != null) {
+        url = url + `&stars=${params.stars}`
+    }
+    return url
 }
 
 function previousButton(currentPage, paginationList) {
-    const params = urlParams()
     let previousLink = document.createElement('a')
-    previousLink.className = "page-link"
+    previousLink.className = 'page-link'
     let previousItem = document.createElement('li')
 
     if (currentPage - 1 !== 0) {
         previousLink.setAttribute(
             'href',
-            `/search?page=${currentPage - 1}&location_name=${params.location}&location_type=${params.type}&arrival_date=${params.startDate}&departure_date=${params.endDate}`
+            urlBuilder(Number(currentPage) - 1)
         )
     } else {
         previousItem.className = 'disabled'
@@ -42,14 +99,13 @@ function previousButton(currentPage, paginationList) {
 }
 
 function forwardButton(currentPage, paginationList, totalPages) {
-    const params = urlParams()
     let forwardLink = document.createElement('a')
-    forwardLink.className = "page-link"
+    forwardLink.className = 'page-link'
     let forwardItem = document.createElement('li')
     if (currentPage !== totalPages) {
         forwardLink.setAttribute(
             'href',
-            `/search?page=${Number(currentPage) + 1}&location_name=${params.location}&location_type=${params.type}&arrival_date=${params.startDate}&departure_date=${params.endDate}`
+            urlBuilder(Number(currentPage) + 1)
         )
     } else {
         forwardItem.className = 'disabled'
@@ -60,27 +116,25 @@ function forwardButton(currentPage, paginationList, totalPages) {
 }
 
 function previousSlice(paginationList) {
-    const params = urlParams()
     try {
         let previousSlice = paginationList.children[2];
         let previousSliceLink = previousSlice.getElementsByTagName('a')[0]
         let previousSlicePage = Number(paginationList.children[3].innerText) - 1
 
         if (previousSlice.innerText === '...') {
-            previousSliceLink.setAttribute('href', `/search?page=${previousSlicePage}&location_name=${params.location}&location_type=${params.type}&arrival_date=${params.startDate}&departure_date=${params.endDate}`)
+            previousSliceLink.setAttribute('href', urlBuilder(previousSlicePage))
         }
     } catch (TypeError) {
     }
 }
 
 function nextSlice(paginationList) {
-    const params = urlParams()
     try {
         let nextSlice = paginationList.children[paginationList.children.length - 2];
         let nextSliceLink = nextSlice.getElementsByTagName('a')[0]
         let nextSlicePage = Number(paginationList.children[paginationList.children.length - 3].innerText) + 1
         if (nextSlice.innerText === '...') {
-            nextSliceLink.setAttribute('href', `/search?page=${nextSlicePage}&location_name=${params.location}&location_type=${params.type}&arrival_date=${params.startDate}&departure_date=${params.endDate}`)
+            nextSliceLink.setAttribute('href', urlBuilder(nextSlicePage))
         }
     } catch (TypeError) {
     }
@@ -112,8 +166,6 @@ function pagination(totalPages) {
 }
 
 function buildPagination(totalPages, currentPage) {
-    const params = urlParams()
-
     let pagesList = pagination(totalPages)
     const paginationList = document.getElementById('paginationList')
 
@@ -128,10 +180,10 @@ function buildPagination(totalPages, currentPage) {
             pagesIndex += 1
         }
         let linkItem = document.createElement('a')
-        linkItem.className = "page-link page-num"
+        linkItem.className = 'page-link page-num'
         linkItem.setAttribute(
             'href',
-            `/search?page=${pages[pagesIndex][i]}&location_name=${params.location}&location_type=${params.type}&arrival_date=${params.startDate}&departure_date=${params.endDate}`
+            urlBuilder(pages[pagesIndex][i])
         )
         linkItem.innerText = pages[pagesIndex][i]
 
@@ -139,9 +191,9 @@ function buildPagination(totalPages, currentPage) {
         let paginationItem = document.createElement('li')
 
         if (pages[pagesIndex][i] === Number(currentPage)) {
-            paginationItem.className = "page-item page-number active"
+            paginationItem.className = 'page-item page-number active'
         } else {
-            paginationItem.className = "page-item page-number"
+            paginationItem.className = 'page-item page-number'
         }
         paginationItem.appendChild(linkItem)
         paginationList.appendChild(paginationItem)

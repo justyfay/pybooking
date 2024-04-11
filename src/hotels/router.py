@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple
 
 from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, Path, Query
+from loguru import logger
 from sqlalchemy import RowMapping
 from starlette import status
 
@@ -44,12 +45,25 @@ async def get_hotels(
     ),
     page: int = Query(default=1, description="Страница выдачи"),
     limit: int = Query(default=10, description="Количество результатов на странице"),
+    stars: str = Query(
+        default=None, description="Звездность отелей в выдаче. Передаются через пробел."
+    ),
 ) -> HotelsPaginate:
+    if stars is not None:
+        try:
+            stars: List[int] | None = list(map(int, stars.split()))
+        except ValueError:
+            logger.warning(
+                "Некорректное значение звезд. Параметр 'stars' принимает последовательность чисел от 0 до 5."
+            )
+            stars = None
+
     hotels = await HotelService.search_by(
         location_name=location_name.capitalize(),
         location_type=location_type,
         arrival_date=arrival_date,
         departure_date=departure_date,
+        stars=stars,
     )
 
     hotels_with_pagination: Tuple[List, int, int] = paginate(
