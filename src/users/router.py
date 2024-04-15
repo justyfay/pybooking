@@ -4,11 +4,14 @@ from fastapi import APIRouter, Response
 from sqlalchemy import RowMapping
 from starlette import status
 
-from src.exceptions import UserAlreadyExistsException
+from src.exceptions import (
+    UserAlreadyExistsException,
+    UserNotCorrectCredentialsException,
+)
 from src.schemas import ConflictUsersResponse, SuccessResponse
 from src.users.auth import authenticate_user, create_access_token, get_password_hash
 from src.users.db import UsersDb
-from src.users.schemas import UserAuthSchema, UserLoginSchema
+from src.users.schemas import UserAuthSchema, UserLoginSchema, UserSchema
 
 router = APIRouter(
     prefix="/auth",
@@ -33,14 +36,19 @@ router = APIRouter(
         },
     },
 )
-async def user_register(user_data: UserAuthSchema) -> None:
+async def user_register(user_data: UserAuthSchema):
     user_exist: Optional[RowMapping] = await UsersDb.find_one_or_none(
         email=user_data.email
     )
     if user_exist:
         raise UserAlreadyExistsException
     hashed_password: str = get_password_hash(user_data.password)
-    await UsersDb.add(email=user_data.email, hashed_password=hashed_password)
+    user: RowMapping = await UsersDb.add(
+        email=user_data.email, hashed_password=hashed_password
+    )
+    return SuccessResponse.model_construct(
+        detail=UserSchema.model_construct(id=user.get("id"))
+    )
 
 
 @router.post(
@@ -60,6 +68,8 @@ async def user_login(response: Response, user_data: UserAuthSchema) -> UserLogin
     user: Optional[RowMapping] = await authenticate_user(
         user_data.email, user_data.password
     )
+    if not user:
+        raise UserNotCorrectCredentialsException
     access_token: str = create_access_token({"sub": str(user.id)})
     response.set_cookie("access_token", access_token, httponly=True, expires=3600)
     return UserLoginSchema.model_construct(access_token=access_token)

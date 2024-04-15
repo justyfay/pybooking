@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple
 
 from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, Path, Query
+from fastapi_cache.decorator import cache
 from loguru import logger
 from sqlalchemy import RowMapping
 from starlette import status
@@ -34,6 +35,7 @@ router = APIRouter(
         }
     },
 )
+@cache(expire=60)
 async def get_hotels(
     location_name: str = Query(default="Москва", description="Название локации"),
     location_type: str = Query(

@@ -28,7 +28,10 @@ def create_access_token(data: dict) -> str:
     return encoded_jwt
 
 
-async def authenticate_user(email: EmailStr, password: str) -> Optional[RowMapping]:
+async def authenticate_user(email: EmailStr, password: str) -> bool | RowMapping:
     user: Optional[RowMapping] = await UsersDb.find_one_or_none(email=email)
-    if user and verify_password(password, user.hashed_password):
-        return user
+    if not user:
+        return False
+    if not verify_password(password, user.hashed_password):
+        return False
+    return user

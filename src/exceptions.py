@@ -35,6 +35,11 @@ class UserIsNotPresentException(BookingException):
     detail: str = "Пользователь не существует"
 
 
+class UserNotCorrectCredentialsException(BookingException):
+    status_code: int = status.HTTP_401_UNAUTHORIZED
+    detail: str = "Неверный логин или пароль"
+
+
 class RoomFullyBooked(BookingException):
     status_code: int = status.HTTP_409_CONFLICT
     detail: str = "Не осталось свободных номеров"
