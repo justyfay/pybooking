@@ -1,3 +1,5 @@
+from typing import Dict
+
 from fastapi import APIRouter, Depends, Path, Query
 from starlette import status
 
@@ -8,6 +10,7 @@ from src.bookings.schemas import (
     NewBookingSchema,
 )
 from src.schemas import ConflictBookingResponse, UnauthorizedResponse
+from src.tasks.tasks import send_booking_confirmation_email
 from src.users.dependencies import get_current_user
 from src.users.models import Users
 
@@ -67,12 +70,15 @@ async def add_booking(
     booking_data: NewBookingSchema,
     user: Users = Depends(get_current_user),
 ) -> BookingResponseSchema:
-    return await BookingDb.add(
+    booking: BookingResponseSchema = await BookingDb.add(
         room_id=booking_data.room_id,
         user_id=user.id,
         date_from=booking_data.date_from,
         date_to=booking_data.date_to,
     )
+    booking_dump: Dict = booking.model_dump()
+    send_booking_confirmation_email.delay(booking_dump, user.email)
+    return booking
 
 
 @router.delete(
