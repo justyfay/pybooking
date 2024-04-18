@@ -1,6 +1,6 @@
 from typing import Any, Optional, Tuple
 
-from sqlalchemy import CTE, Select
+from sqlalchemy import CTE, NullPool, Select
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -13,7 +13,14 @@ from sqlalchemy.sql.dml import ReturningInsert
 
 from config import settings
 
-engine: AsyncEngine = create_async_engine(url=settings.database_url)
+if settings.mode == "Test":
+    database_url = settings.database_test_url
+    database_params = {"poolclass": NullPool}
+else:
+    database_url = settings.database_url
+    database_params = {}
+
+engine: AsyncEngine = create_async_engine(url=database_url, **database_params)
 async_session_maker: async_sessionmaker[AsyncSession] = async_sessionmaker(
     bind=engine, expire_on_commit=False
 )

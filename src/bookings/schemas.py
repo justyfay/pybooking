@@ -17,7 +17,7 @@ class BookingSchema(BaseModel):
     total_cost: int
     total_days: int
     name: str
-    image_id: int
+    images: int | None
     description: str
     room_amenities: List
 

@@ -9,7 +9,11 @@ from src.exceptions import (
     UserNotCorrectCredentialsException,
 )
 from src.schemas import ConflictUsersResponse, SuccessResponse
-from src.users.auth import authenticate_user, create_access_token, get_password_hash
+from src.users.auth import (
+    authenticate_user,
+    create_access_token,
+    get_password_hash,
+)
 from src.users.db import UsersDb
 from src.users.schemas import UserAuthSchema, UserLoginSchema, UserSchema
 
@@ -88,5 +92,6 @@ async def user_login(response: Response, user_data: UserAuthSchema) -> UserLogin
         }
     },
 )
-async def user_logout(response: Response) -> None:
+async def user_logout(response: Response) -> SuccessResponse:
     response.delete_cookie("access_token")
+    return SuccessResponse()
