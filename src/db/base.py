@@ -59,7 +59,7 @@ class BaseDb:
             query: ReturningInsert[Tuple | Any] = (
                 insert(cls.model).values(**data).returning(cls.model.id)
             )
-            logger.debug(f"SQL Query: '{query_compile(query)}'")
+            # logger.debug(f"SQL Query: '{query_compile(query)}'")
             async with async_session_maker() as session:
                 query_execute: Result[Tuple | Any] = await session.execute(query)
                 result: Optional[RowMapping] = query_execute.mappings().first()

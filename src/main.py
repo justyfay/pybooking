@@ -19,7 +19,7 @@ from src.database import engine
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI):  # noqa
     redis = from_url(settings.redis_url, encoding="utf-8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="cache")
 
@@ -48,7 +48,7 @@ admin.add_view(BookingsAdmin)
 origins: List[str] = ["http://localhost:8000", "http://localhost:3000"]
 
 app.add_middleware(
-    middleware_class=CORSMiddleware,
+    middleware_class=CORSMiddleware,  # noqa
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
