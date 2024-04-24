@@ -1,7 +1,6 @@
 from datetime import date
 from typing import Any, Sequence, Tuple, Type
 
-from loguru import logger
 from sqlalchemy import CTE, Result, RowMapping, Select, and_, func, or_, select
 
 from src.bookings.models import Bookings
@@ -9,6 +8,7 @@ from src.database import Base, async_session_maker, query_compile
 from src.db.base import BaseDb
 from src.hotels.rooms.models import Rooms
 from src.hotels.rooms.schemas import ListRoomsSchema
+from src.logger import logger
 
 
 class RoomsDb(BaseDb):

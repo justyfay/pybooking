@@ -1,7 +1,6 @@
 from datetime import date
 from typing import Any, Sequence, Tuple, Type
 
-from loguru import logger
 from sqlalchemy import (
     CTE,
     Result,
@@ -22,6 +21,7 @@ from src.database import Base, async_session_maker, query_compile
 from src.db.base import BaseDb
 from src.exceptions import RoomFullyBooked
 from src.hotels.rooms.models import Rooms
+from src.logger import logger
 
 
 class BookingDb(BaseDb):

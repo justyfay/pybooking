@@ -1,5 +1,7 @@
 .env
+.env-prod
 .idea
 __pycache__
 .DS_Store
 /src/scripts/
+src/migration/versions

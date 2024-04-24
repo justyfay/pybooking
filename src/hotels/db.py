@@ -1,7 +1,6 @@
 from datetime import date
 from typing import Any, List, Optional, Sequence, Tuple, Type
 
-from loguru import logger
 from sqlalchemy import CTE, Result, RowMapping, Select, and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,6 +11,7 @@ from src.geo.models import City, Country, Region
 from src.hotels.models import Hotels
 from src.hotels.rooms.models import Rooms
 from src.hotels.schemas import ListHotelsWithRoomsSchema
+from src.logger import logger
 
 
 class HotelsDb(BaseDb):
