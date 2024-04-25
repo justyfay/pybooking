@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "PyBooking"
 version = "0.1.0"
-description = ""
+description = "Монолитный сервис бронирования отелей на FastApi."
 authors = ["justyfay"]
 readme = "README.md"
 
@@ -27,9 +27,7 @@ requests = "^2.31.0"
 fastapi-cache2 = {extras = ["redis"], version = "^0.2.1"}
 celery = "^5.3.6"
 flower = "^2.0.1"
-pillow = "^10.3.0"
 sqladmin = "^0.16.1"
-itsdangerous = "^2.1.2"
 httpx = "^0.27.0"
 pytest-asyncio = "^0.23.6"
 faker = "^24.9.0"
@@ -37,6 +35,7 @@ python-json-logger = "^2.0.7"
 coloredlogs = "^15.0.1"
 sentry-sdk = {extras = ["fastapi"], version = "^1.45.0"}
 gunicorn = "^22.0.0"
+prometheus-fastapi-instrumentator = "^7.0.0"
 
 [build-system]
 requires = ["poetry-core"]
