@@ -169,7 +169,8 @@ class HotelsDb(BaseDb):
             )
             .join(booked_hotels, booked_hotels.c.hotel_id == Hotels.id, isouter=True)
             .join(City, Hotels.city_id == City.id)
-            .join(Country, City.country_id == Country.id)
+            .join(Region, City.region_id == Region.id)
+            .join(Country, Region.country_id == Country.id)
             .where(Country.name.like(f"%{country_name}%"))
         )
 
