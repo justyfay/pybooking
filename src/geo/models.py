@@ -23,6 +23,5 @@ class City(Base):
     __tablename__ = "city"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    country_id: Mapped[int] = mapped_column(ForeignKey("country.id"), nullable=True)
     region_id: Mapped[int] = mapped_column(ForeignKey("region.id"), nullable=True)
     name: Mapped[str]

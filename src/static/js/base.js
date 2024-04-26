@@ -3,42 +3,47 @@ document.addEventListener("DOMContentLoaded", function () {
     input.addEventListener("keyup", async function (event) {
             let searchData = document.getElementById("searchLocation").value;
             event.preventDefault();
-
-            const listLocations = document.querySelector('[id=list-locations]');
-            const locationRequest = new Request("/geo?location=" + searchData);
             if (searchData.length >= 3) {
-                fetch(locationRequest)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        for (let i = 0; i < data.length; i++) {
-                            const listItem = document.createElement("option");
-                            let labelName
-                            if (data[i].type === 'city') {
+                $(function () {
+                    const locationRequest = `/geo?location=${searchData}`
+                    $.getJSON(locationRequest, function (src) {
+                        let data = src.map(function (v) {
+                            return {
+                                value: v.name,
+                                type: v.type
+                            };
+                        });
+                        $("#searchLocation").autocomplete({
+                            source: data,
+                            select: function (event, ui) {
+                                $("#searchLocation").text(ui.item.value)
+                                document.getElementById("searchLocation").setAttribute('value-type', ui.item.type)
+                                document.getElementById("searchLocation").setAttribute('value', ui.item.value)
+                            },
+                        });
+                    });
+                });
+            }
+            $.widget("custom.autocomplete", $.ui.autocomplete, {
+                _renderItem: function (ul, data) {
+                    let labelName
+                            if (data.type === 'city') {
                                 labelName = 'Город';
-                            } else if (data[i].type === 'region') {
+                            } else if (data.type === 'region') {
                                 labelName = 'Регион';
-                            } else if (data[i].type === 'country') {
+                            } else if (data.type === 'country') {
                                 labelName = 'Страна';
                             }
-                            listItem.setAttribute('value-type', data[i].type)
-                            listItem.setAttribute('label', labelName)
-                            let xpath = `//option[text()='${data[i].name}']`;
-                            if (!document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
-                                listItem.textContent = data[i].name;
-                                listLocations.appendChild(listItem);
-                            }
-                        }
-                    })
-                    .catch(console.error);
-            }
-            let opts = document.getElementById('list-locations').children;
-            for (let i = 0; i < opts.length; i++) {
-                if (opts[i].value === searchData) {
-                    document.getElementById("searchLocation").setAttribute('value-type', opts[i].getAttribute('value-type'))
-                    document.getElementById("searchLocation").setAttribute('value', opts[i].value)
-                    break;
+                    let li = $('<li>').attr('value-type', data.type);
+                    li.attr('value', data.value).appendTo(ul);
+                    let div = $('<div>').appendTo(li)
+                    let locationNameSpan = $('<span class="locationName">')
+                    let locationTypeSpan = $('<span class="locationPosition">')
+                    locationNameSpan.append(data.value).appendTo(div)
+                    locationTypeSpan.append(labelName).appendTo(div)
+                    return li;
                 }
-            }
+            });
         }
     )
 })

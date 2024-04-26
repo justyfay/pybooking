@@ -17,7 +17,12 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css"
             rel="stylesheet"
     />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', path='css/base.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='images/favicon.png') }}">
     <script src="{{ url_for('static', path='js/base.js') }}"></script>
 
     {% block links %}{% endblock %}
@@ -58,15 +63,14 @@
 </header>
 <body>
 
-<div class=".d-flex .flex-nowrap  justify-content-center align-items-center mt-4 search-panel " style="width: 80%; margin-left: 10%; border-radius: 10px; background-color: #032244">
+<div class=".d-flex .flex-nowrap  justify-content-center align-items-center mt-4 search-panel "
+     style="width: 80%; margin-left: 10%; border-radius: 10px; background-color: #032244">
     <div class="row justify-content-between" style="padding: 2%">
         <form class="form-group col-lg-5 col-sm-6">
             <input style="height: 120%;" type="text" class="form-control col-lg-5 col-sm-6" placeholder="Место отдыха"
-                   list="list-locations"
                    id="searchLocation" autocomplete="off" role="combobox">
-            <datalist id="list-locations" role="listbox">
-            </datalist>
         </form>
+
 
         <div class="col-lg-2 col-sm-6 flex-fill start-date">
             <input id="startDate" placeholder="Дата заезда" style="height: 120%" class="form-control"

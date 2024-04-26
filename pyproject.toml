@@ -36,6 +36,7 @@ coloredlogs = "^15.0.1"
 sentry-sdk = {extras = ["fastapi"], version = "^1.45.0"}
 gunicorn = "^22.0.0"
 prometheus-fastapi-instrumentator = "^7.0.0"
+itsdangerous = "^2.2.0"
 
 [build-system]
 requires = ["poetry-core"]

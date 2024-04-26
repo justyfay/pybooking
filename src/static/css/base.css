@@ -71,6 +71,20 @@
     }
 }
 
+body > ul {
+    max-height: 200px;
+    min-height: 50px;
+    overflow-y: auto;
+}
+
+li div span{
+  display: block;
+}
+
+.locationPosition {
+    font-size: 14px;
+}
+
 @media screen and (max-width: 580px) {
     .start-date {
         margin-top: 10px;
