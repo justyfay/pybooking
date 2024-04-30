@@ -9,6 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% block links %}
     <script src="{{ url_for('static', path='js/search.js') }}"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=152fc12c-70ee-4ec5-bc17-d54e5579dc8b&lang=ru_RU&scroll=true"
+            type="text/javascript"></script>
+    <script src="{{ url_for('static', path='js/map.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', path='css/search.css') }}">
 
     {% endblock %}
@@ -16,12 +19,12 @@
 </head>
 
 <body>
+
 {% block header %}
 <div class="p-lg-3 text-center bg-image" style="height: 40px;">
     {% endblock %}
 
     {% block content %}
-
 
     <div class="d-flex bd-highlight content-all" style="padding-left: 10%; padding-right: 10%;">
         <div class="p-2 flex-fill card stars-rate flex-shrink-0"
@@ -146,11 +149,7 @@
 
         </div>
         {% if hotels %}
-        <div class="flex-fill map-card" style="margin-bottom: 48%; padding-top: 1%">
-
-            <script type="text/javascript" charset="utf-8" async
-                    src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A10f00bc154c9ef3746724966830773147f14fa84ea231223cc01bc22695a4bda&amp;width=100%25&amp;height=710&amp;lang=en_FR&amp;scroll=true"></script>
-
+        <div id="map" class="flex-fill map-card">
         </div>
         {% else %}
         <div class="flex-fill map-stub"

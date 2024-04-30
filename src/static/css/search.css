@@ -16,10 +16,19 @@
 }
 
 .map-card {
-    height: 5.5vh;
+    width: 25%;
+    height: 780px;
+    margin-bottom: 5%;
+    padding-top: 1%;
+    border-radius: 5px;
     top: 6vh;
     position: sticky;
     background-size: cover
+}
+
+#map > ymaps {
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 iframe {

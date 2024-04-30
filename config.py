@@ -35,6 +35,9 @@ class Settings(BaseSettings):
     test_db_user: Union[str, Unset] = UNSET
     test_db_pass: Union[str, Unset] = UNSET
 
+    pg_login: str
+    pg_password: str
+
     secret_key: str
     algorithm: str
 
