@@ -1,4 +1,5 @@
 import math
+import string
 from datetime import date
 from typing import List, Optional, Tuple
 
@@ -59,9 +60,8 @@ async def get_hotels(
                 "Некорректное значение звезд. Параметр 'stars' принимает последовательность чисел от 0 до 5."
             )
             stars = None
-
     hotels = await HotelService.search_by(
-        location_name=location_name.capitalize(),
+        location_name=string.capwords(location_name, "-"),
         location_type=location_type,
         arrival_date=arrival_date,
         departure_date=departure_date,

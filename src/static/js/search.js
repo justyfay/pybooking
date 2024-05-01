@@ -67,7 +67,8 @@ function urlParams() {
     let startDate = searchParams.get('arrival_date');
     let endDate = searchParams.get('departure_date');
     let stars = searchParams.get('stars');
-    return {location, type, startDate, endDate, stars}
+    let page = searchParams.get('page')
+    return {location, type, startDate, endDate, stars, page}
 }
 
 function urlBuilder(currentPage) {
