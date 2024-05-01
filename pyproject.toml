@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "PyBooking"
-version = "0.1.0"
+version = "1.0.0"
 description = "Монолитный сервис бронирования отелей на FastApi."
 authors = ["justyfay"]
 readme = "README.md"

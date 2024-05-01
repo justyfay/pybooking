@@ -1,5 +1,5 @@
 .env
-.env-prod
+prod.env
 .idea
 __pycache__
 .DS_Store
