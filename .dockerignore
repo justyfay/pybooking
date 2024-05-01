@@ -4,5 +4,5 @@ src/migration/versions
 __pycache__
 
 .env
-.env-prod
+prod.env
 .gitignore
