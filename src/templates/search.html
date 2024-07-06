@@ -78,14 +78,8 @@
             <div class="container d-flex mt-1 p-1 " id="searchResults">
                 <div class="card w-100 hotel-card">
                     <div class="row g-0">
-                        {% if hotel.images %}
                         <div class="col-md-4 p-0"
-                             style="background-image: url('{{hotel.images[loop.first]}}'); background-size: cover; background-repeat: no-repeat; border-bottom-left-radius: 7px; border-top-left-radius: 7px;"></div>
-                        {% else %}
-
-                        <div class="col-md-4 p-0"
-                             style="background-color: #dbdbdb; border-bottom-left-radius: 7px; border-top-left-radius: 7px; background-size: cover; background-repeat: no-repeat;"></div>
-                        {% endif %}
+                             style="background-image: url('{{ get_hotel_img(hotel.id) }}'); background-size: cover; background-repeat: no-repeat; border-bottom-left-radius: 7px; border-top-left-radius: 7px;"></div>
 
 
                         <div class="col-md-8">

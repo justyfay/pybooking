@@ -1,7 +1,17 @@
 from datetime import date
 from typing import Any, List, Optional, Sequence, Tuple, Type
 
-from sqlalchemy import CTE, Result, RowMapping, Select, and_, func, or_, select
+from sqlalchemy import (
+    CTE,
+    Result,
+    RowMapping,
+    Select,
+    and_,
+    func,
+    or_,
+    select,
+    text,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.bookings.models import Bookings
@@ -10,7 +20,7 @@ from src.db.base import BaseDb
 from src.geo.models import City, Country, Region
 from src.hotels.models import Hotels
 from src.hotels.rooms.models import Rooms
-from src.hotels.schemas import ListHotelsWithRoomsSchema
+from src.hotels.schemas import HotelsSchema, ListHotelsWithRoomsSchema
 from src.logger import logger
 
 
@@ -187,3 +197,20 @@ class HotelsDb(BaseDb):
             logger.info(f"Result: '{hotels_result}'")
 
             return ListHotelsWithRoomsSchema.model_validate(hotels_result)
+
+    @classmethod
+    async def get_hotel_by_room_id(cls, room_id: int):
+        """
+        :param room_id: - номер комнаты, по которой ищем отель.
+        :return: :class:`HotelsSchema` - найденный отель.
+        """
+        hotels_by_room_id = text(
+            f"SELECT * FROM hotels WHERE hotels.id = (SELECT hotel_id FROM rooms WHERE rooms.id = {room_id})"
+        )
+        async with async_session_maker() as session:
+            logger.debug(f"SQL Query: '{hotels_by_room_id}'")
+            hotels_execute: Result[Any] = await session.execute(hotels_by_room_id)
+            hotels_result: Sequence[RowMapping] = hotels_execute.mappings().all()
+            logger.info(f"Result: '{hotels_result}'")
+
+            return HotelsSchema.model_validate(hotels_result[0])

@@ -24,15 +24,10 @@ class BaseDb:
             return result
 
     @classmethod
-    async def find_all(
-        cls, limit: int = 10, page: int = 1, **filter_by
-    ) -> Sequence[RowMapping]:
+    async def find_all(cls, **filter_by) -> Sequence[RowMapping]:
         async with async_session_maker() as session:
-            query: Select[Tuple | Any] = (
-                select(cls.model.__table__.columns)
-                .filter_by(**filter_by)
-                .limit(limit)
-                .offset(page)
+            query: Select[Tuple | Any] = select(cls.model.__table__.columns).filter_by(
+                **filter_by
             )
             logger.debug(f"SQL Query: '{query_compile(query)}'")
             query_execute: Result[Tuple | Any] = await session.execute(query)

@@ -9,6 +9,7 @@ from src.bookings.schemas import (
     ListBookingsSchema,
     NewBookingSchema,
 )
+from src.hotels.db import HotelsDb
 from src.schemas import ConflictBookingResponse, UnauthorizedResponse
 from src.tasks.tasks import send_booking_confirmation_email
 from src.users.dependencies import get_current_user
@@ -76,7 +77,14 @@ async def add_booking(
         date_from=booking_data.date_from,
         date_to=booking_data.date_to,
     )
+    hotel_info = await HotelsDb.get_hotel_by_room_id(room_id=booking.room_id)
+    booking_info = await BookingDb.find_one_or_none(id=booking.id)
+
     booking_dump: Dict = booking.model_dump()
+    booking_dump.update(
+        {"hotel": hotel_info.model_dump(), "booking_info": dict(booking_info)}
+    )
+
     send_booking_confirmation_email.delay(booking_dump, user.email)
     return booking
 

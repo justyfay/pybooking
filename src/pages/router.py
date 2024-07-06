@@ -1,14 +1,39 @@
 from datetime import date
 
+import boto3
+from botocore.exceptions import BotoCoreError
 from fastapi import APIRouter, Depends, Query, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from loguru import logger
 from starlette import status
 
+import config
 from src.hotels.router import get_hotels
 from src.hotels.schemas import HotelsPaginate
 
+
+def get_hotel_img(hotel_id: int) -> str:
+    s3 = boto3.client(
+        service_name="s3",
+        region_name="ru-1",
+        aws_access_key_id=config.settings.s3_access_key,
+        aws_secret_access_key=config.settings.s3_secret_key,
+        endpoint_url=config.settings.s3_url,
+    )
+    try:
+        url = s3.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": "public-bucket", "Key": f"hotel_{hotel_id}.jpg"},
+            ExpiresIn=3600,
+        )
+        return url
+    except BotoCoreError as e:
+        logger.error(e)
+
+
 templates = Jinja2Templates(directory="src/templates")
+templates.env.globals.update(get_hotel_img=get_hotel_img)
 
 router = APIRouter(
     prefix="",
