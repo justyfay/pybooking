@@ -49,10 +49,15 @@ class Settings(BaseSettings):
     base_url: str
     origins: List[str]
 
-    smtp_host:  Union[str, Unset] = UNSET
-    smtp_port:  Union[int, Unset] = UNSET
-    smtp_user:  Union[str, Unset] = UNSET
-    smtp_password:  Union[str, Unset] = UNSET
+    s3_access_key: str
+    s3_secret_key: str
+    s3_url: str
+
+    smtp_host: Union[str, Unset] = UNSET
+    smtp_port: Union[int, Unset] = UNSET
+    smtp_user: Union[str, Unset] = UNSET
+    smtp_sender: Union[str, Unset] = UNSET
+    smtp_password: Union[str, Unset] = UNSET
 
     @property
     def database_url(self) -> str:
